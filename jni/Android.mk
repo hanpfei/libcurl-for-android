@@ -57,3 +57,19 @@ LOCAL_MODULE:= libcurl
 
 include $(BUILD_SHARED_LIBRARY)
 
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := netjni
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/src \
+	$(LOCAL_PATH)/3rd/curl/include/
+
+LOCAL_SRC_FILES += 	src/HttpClient.cpp
+
+LOCAL_SHARED_LIBRARIES += libcurl
+
+LOCAL_LDLIBS := -llog -landroid -lz
+
+#LOCAL_CFLAGS += -DDEBUG
+
+include $(BUILD_SHARED_LIBRARY)
