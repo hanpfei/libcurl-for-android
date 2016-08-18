@@ -9,7 +9,7 @@
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
+ * are also available at https://curl.haxx.se/docs/copyright.html.
  *
  * You may opt to use, copy, modify, merge, publish, distribute and/or sell
  * copies of the Software, and permit persons to whom the Software is
@@ -426,7 +426,7 @@ static CURLcode checkpasswd(const char *kind, /* for what purpose */
       curlx_msnprintf(prompt, sizeof(prompt),
                       "Enter %s password for user '%s' on URL #%"
                       CURL_FORMAT_CURL_OFF_TU ":",
-                      kind, *userpwd, i + 1);
+                      kind, *userpwd, (curl_off_t) (i + 1));
 
     /* get password */
     getpass_r(prompt, passwd, sizeof(passwd));
@@ -519,7 +519,7 @@ CURLcode get_args(struct OperationConfig *config, const size_t i)
   bool last = (config->next ? FALSE : TRUE);
 
   /* Check we have a password for the given host user */
-  if(config->userpwd && !config->xoauth2_bearer) {
+  if(config->userpwd && !config->oauth_bearer) {
     result = checkpasswd("host", i, last, &config->userpwd);
     if(result)
       return result;

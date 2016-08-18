@@ -5,11 +5,11 @@
  *                            | (__| |_| |  _ <| |___
  *                             \___|\___/|_| \_\_____|
  *
- * Copyright (C) 1998 - 2015, Daniel Stenberg, <daniel@haxx.se>, et al.
+ * Copyright (C) 1998 - 2016, Daniel Stenberg, <daniel@haxx.se>, et al.
  *
  * This software is licensed as described in the file COPYING, which
  * you should have received as part of this distribution. The terms
- * are also available at http://curl.haxx.se/docs/copyright.html.
+ * are also available at https://curl.haxx.se/docs/copyright.html.
  *
  * You may opt to use, copy, modify, merge, publish, distribute and/or sell
  * copies of the Software, and permit persons to whom the Software is
@@ -119,7 +119,7 @@ CURLcode Curl_SOCKS4(const char *proxy_name,
   int result;
   CURLcode code;
   curl_socket_t sock = conn->sock[sockindex];
-  struct SessionHandle *data = conn->data;
+  struct Curl_easy *data = conn->data;
 
   if(Curl_timeleft(data, NULL, TRUE) < 0) {
     /* time-out, bail out, go home */
@@ -173,8 +173,8 @@ CURLcode Curl_SOCKS4(const char *proxy_name,
       unsigned short ip[4];
       Curl_printable_address(hp, buf, sizeof(buf));
 
-      if(4 == sscanf( buf, "%hu.%hu.%hu.%hu",
-                      &ip[0], &ip[1], &ip[2], &ip[3])) {
+      if(4 == sscanf(buf, "%hu.%hu.%hu.%hu",
+                     &ip[0], &ip[1], &ip[2], &ip[3])) {
         /* Set DSTIP */
         socksreq[4] = (unsigned char)ip[0];
         socksreq[5] = (unsigned char)ip[1];
@@ -300,8 +300,8 @@ CURLcode Curl_SOCKS4(const char *proxy_name,
             ", request rejected or failed.",
             (unsigned char)socksreq[4], (unsigned char)socksreq[5],
             (unsigned char)socksreq[6], (unsigned char)socksreq[7],
-            ((socksreq[8] << 8) | socksreq[9]),
-            socksreq[1]);
+            (((unsigned char)socksreq[8] << 8) | (unsigned char)socksreq[9]),
+            (unsigned char)socksreq[1]);
       return CURLE_COULDNT_CONNECT;
     case 92:
       failf(data,
@@ -310,8 +310,8 @@ CURLcode Curl_SOCKS4(const char *proxy_name,
             "identd on the client.",
             (unsigned char)socksreq[4], (unsigned char)socksreq[5],
             (unsigned char)socksreq[6], (unsigned char)socksreq[7],
-            ((socksreq[8] << 8) | socksreq[9]),
-            socksreq[1]);
+            (((unsigned char)socksreq[8] << 8) | (unsigned char)socksreq[9]),
+            (unsigned char)socksreq[1]);
       return CURLE_COULDNT_CONNECT;
     case 93:
       failf(data,
@@ -320,8 +320,8 @@ CURLcode Curl_SOCKS4(const char *proxy_name,
             "report different user-ids.",
             (unsigned char)socksreq[4], (unsigned char)socksreq[5],
             (unsigned char)socksreq[6], (unsigned char)socksreq[7],
-            ((socksreq[8] << 8) | socksreq[9]),
-            socksreq[1]);
+            (((unsigned char)socksreq[8] << 8) | (unsigned char)socksreq[9]),
+            (unsigned char)socksreq[1]);
       return CURLE_COULDNT_CONNECT;
     default:
       failf(data,
@@ -329,8 +329,8 @@ CURLcode Curl_SOCKS4(const char *proxy_name,
             ", Unknown.",
             (unsigned char)socksreq[4], (unsigned char)socksreq[5],
             (unsigned char)socksreq[6], (unsigned char)socksreq[7],
-            ((socksreq[8] << 8) | socksreq[9]),
-            socksreq[1]);
+            (((unsigned char)socksreq[8] << 8) | (unsigned char)socksreq[9]),
+            (unsigned char)socksreq[1]);
       return CURLE_COULDNT_CONNECT;
     }
   }
@@ -374,7 +374,7 @@ CURLcode Curl_SOCKS5(const char *proxy_name,
   int result;
   CURLcode code;
   curl_socket_t sock = conn->sock[sockindex];
-  struct SessionHandle *data = conn->data;
+  struct Curl_easy *data = conn->data;
   long timeout;
   bool socks5_resolve_local = (conn->proxytype == CURLPROXY_SOCKS5)?TRUE:FALSE;
   const size_t hostname_len = strlen(hostname);
@@ -668,39 +668,6 @@ CURLcode Curl_SOCKS5(const char *proxy_name,
           "SOCKS5 reply has wrong version, version should be 5.");
     return CURLE_COULDNT_CONNECT;
   }
-  if(socksreq[1] != 0) { /* Anything besides 0 is an error */
-    if(socksreq[3] == 1) {
-      failf(data,
-            "Can't complete SOCKS5 connection to %d.%d.%d.%d:%d. (%d)",
-            (unsigned char)socksreq[4], (unsigned char)socksreq[5],
-            (unsigned char)socksreq[6], (unsigned char)socksreq[7],
-            ((socksreq[8] << 8) | socksreq[9]),
-            socksreq[1]);
-    }
-    else if(socksreq[3] == 3) {
-      failf(data,
-            "Can't complete SOCKS5 connection to %s:%d. (%d)",
-            hostname,
-            ((socksreq[8] << 8) | socksreq[9]),
-            socksreq[1]);
-    }
-    else if(socksreq[3] == 4) {
-      failf(data,
-            "Can't complete SOCKS5 connection to %02x%02x:%02x%02x:"
-            "%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%d. (%d)",
-            (unsigned char)socksreq[4], (unsigned char)socksreq[5],
-            (unsigned char)socksreq[6], (unsigned char)socksreq[7],
-            (unsigned char)socksreq[8], (unsigned char)socksreq[9],
-            (unsigned char)socksreq[10], (unsigned char)socksreq[11],
-            (unsigned char)socksreq[12], (unsigned char)socksreq[13],
-            (unsigned char)socksreq[14], (unsigned char)socksreq[15],
-            (unsigned char)socksreq[16], (unsigned char)socksreq[17],
-            (unsigned char)socksreq[18], (unsigned char)socksreq[19],
-            ((socksreq[8] << 8) | socksreq[9]),
-            socksreq[1]);
-    }
-    return CURLE_COULDNT_CONNECT;
-  }
 
   /* Fix: in general, returned BND.ADDR is variable length parameter by RFC
      1928, so the reply packet should be read until the end to avoid errors at
@@ -735,10 +702,9 @@ CURLcode Curl_SOCKS5(const char *proxy_name,
     /* decrypt_gssapi_blockread already read the whole packet */
 #endif
     if(len > 10) {
-      len -= 10;
       result = Curl_blockread_all(conn, sock, (char *)&socksreq[10],
-                                  len, &actualread);
-      if(result || (len != actualread)) {
+                                  len - 10, &actualread);
+      if(result || ((len - 10) != actualread)) {
         failf(data, "Failed to receive SOCKS5 connect request ack.");
         return CURLE_COULDNT_CONNECT;
       }
@@ -746,6 +712,43 @@ CURLcode Curl_SOCKS5(const char *proxy_name,
 #if defined(HAVE_GSSAPI) || defined(USE_WINDOWS_SSPI)
   }
 #endif
+
+  if(socksreq[1] != 0) { /* Anything besides 0 is an error */
+    if(socksreq[3] == 1) {
+      failf(data,
+            "Can't complete SOCKS5 connection to %d.%d.%d.%d:%d. (%d)",
+            (unsigned char)socksreq[4], (unsigned char)socksreq[5],
+            (unsigned char)socksreq[6], (unsigned char)socksreq[7],
+            (((unsigned char)socksreq[8] << 8) |
+             (unsigned char)socksreq[9]),
+            (unsigned char)socksreq[1]);
+    }
+    else if(socksreq[3] == 3) {
+      failf(data,
+            "Can't complete SOCKS5 connection to %s:%d. (%d)",
+            hostname,
+            (((unsigned char)socksreq[len - 2] << 8) |
+             (unsigned char)socksreq[len - 1]),
+            (unsigned char)socksreq[1]);
+    }
+    else if(socksreq[3] == 4) {
+      failf(data,
+            "Can't complete SOCKS5 connection to %02x%02x:%02x%02x:"
+            "%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%02x%02x:%d. (%d)",
+            (unsigned char)socksreq[4], (unsigned char)socksreq[5],
+            (unsigned char)socksreq[6], (unsigned char)socksreq[7],
+            (unsigned char)socksreq[8], (unsigned char)socksreq[9],
+            (unsigned char)socksreq[10], (unsigned char)socksreq[11],
+            (unsigned char)socksreq[12], (unsigned char)socksreq[13],
+            (unsigned char)socksreq[14], (unsigned char)socksreq[15],
+            (unsigned char)socksreq[16], (unsigned char)socksreq[17],
+            (unsigned char)socksreq[18], (unsigned char)socksreq[19],
+            (((unsigned char)socksreq[20] << 8) |
+             (unsigned char)socksreq[21]),
+            (unsigned char)socksreq[1]);
+    }
+    return CURLE_COULDNT_CONNECT;
+  }
 
   (void)curlx_nonblock(sock, TRUE);
   return CURLE_OK; /* Proxy was successful! */
