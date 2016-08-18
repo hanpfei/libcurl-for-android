@@ -2,6 +2,123 @@ include $(call all-subdir-makefiles)
 
 LOCAL_PATH := $(call my-dir)
 
+include $(CLEAR_VARS)
+
+include $(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/Makefile.inc
+
+include $(LOCAL_PATH)/3rd/openssl-1.0.2h/android-config.mk
+
+LOCAL_SRC_FILES := $(addprefix 3rd/openssl-1.0.2h/crypto/,$(CRYPTO_SRC))
+
+LOCAL_SRC_FILES += $(addprefix 3rd/openssl-1.0.2h/crypto/aes/,$(AES_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/asn1/,$(ASN1_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/bio/,$(BIO_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/bn/,$(BN_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/buffer/,$(BUFFER_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/camellia/,$(CAMELLIA_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/cmac/,$(CMAC_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/cms/,$(CMS_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/comp/,$(COMP_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/conf/,$(CONF_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/des/,$(DES_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/dh/,$(DH_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/dsa/,$(DSA_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/dso/,$(DSO_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/ec/,$(EC_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/ecdh/,$(ECDH_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/ecdsa/,$(ECDSA_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/err/,$(ERR_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/evp/,$(EVP_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/hmac/,$(HMAC_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/krb5/,$(KRB5_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/lhash/,$(LHASH_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/md4/,$(MD4_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/md5/,$(MD5_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/mdc2/,$(MDC2_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/modes/,$(MODES_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/objects/,$(OBJECTS_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/ocsp/,$(OCSP_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/pem/,$(PEM_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/pkcs12/,$(PKCS12_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/pkcs7/,$(PKCS7_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/pqueue/,$(PQUEUE_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/rand/,$(RAND_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/rc2/,$(RC2_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/rc4/,$(RC4_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/ripemd/,$(RIPEMD_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/rsa/,$(RSA_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/sha/,$(SHA_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/srp/,$(SRP_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/stack/,$(STACK_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/ts/,$(TS_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/txt_db/,$(TXT_DB_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/ui/,$(UI_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/whrlpool/,$(WHRLPOOL_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/x509/,$(X509_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/x509v3/,$(X509V3_SRC))
+
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/3rd/openssl-1.0.2h \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/ssl \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/asn1 \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/evp \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/modes \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/store \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/include \
+
+LOCAL_MODULE:= libcrypto
+
+include $(BUILD_SHARED_LIBRARY)
+
+
+include $(CLEAR_VARS)
+
+include $(LOCAL_PATH)/3rd/openssl-1.0.2h/ssl/Makefile.inc
+
+include $(LOCAL_PATH)/3rd/openssl-1.0.2h/android-config.mk
+
+LOCAL_SRC_FILES := $(addprefix 3rd/openssl-1.0.2h/ssl/,$(SSL_SRC))
+
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/3rd/openssl-1.0.2h \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/include \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/ssl \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto
+
+LOCAL_SHARED_LIBRARIES += libcrypto
+
+LOCAL_MODULE:= libssl
+
+include $(BUILD_SHARED_LIBRARY)
+
+
+include $(CLEAR_VARS)
+
+include $(LOCAL_PATH)/3rd/openssl-1.0.2h/apps/Makefile.inc
+
+include $(LOCAL_PATH)/3rd/openssl-1.0.2h/android-config.mk
+
+LOCAL_SRC_FILES := $(addprefix 3rd/openssl-1.0.2h/apps/,$(APPS_SRC))
+
+LOCAL_SRC_FILES += 3rd/openssl-1.0.2h/apps/openssl.c
+
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/3rd/openssl-1.0.2h \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/include \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/ssl \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto
+
+LOCAL_CFLAGS += -DMONOLITH
+
+# These flags omit whole features from the commandline "openssl".
+# However, portions of these features are actually turned on.
+LOCAL_CFLAGS += -DOPENSSL_NO_DTLS1
+
+LOCAL_SHARED_LIBRARIES += libcrypto \
+	libssl
+
+LOCAL_MODULE:= openssl
+
+include $(BUILD_EXECUTABLE)
+
 CFLAGS := -Wpointer-arith -Wwrite-strings -Wunused -Winline \
  -Wnested-externs -Wmissing-declarations -Wmissing-prototypes -Wno-long-long \
  -Wfloat-equal -Wno-multichar -Wsign-compare -Wno-format-nonliteral \
@@ -46,9 +163,16 @@ LOCAL_SRC_FILES += 3rd/curl/c-ares/ares__close_sockets.c \
 	3rd/curl/c-ares/inet_net_pton.c
 
 LOCAL_CFLAGS += $(CFLAGS)
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/3rd/curl/include/ $(LOCAL_PATH)/3rd/curl/lib $(LOCAL_PATH)/3rd/curl/c-ares 
+
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/3rd/curl/include/ \
+	$(LOCAL_PATH)/3rd/curl/lib \
+	$(LOCAL_PATH)/3rd/curl/c-ares \
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/include
 
 LOCAL_LDLIBS := -llog -landroid -lz
+
+LOCAL_SHARED_LIBRARIES += libcrypto \
+	libssl
 
 LOCAL_COPY_HEADERS_TO := libcurl
 LOCAL_COPY_HEADERS := $(addprefix 3rd/curl/include/curl/,$(HHEADERS))
@@ -56,6 +180,8 @@ LOCAL_COPY_HEADERS := $(addprefix 3rd/curl/include/curl/,$(HHEADERS))
 LOCAL_MODULE:= libcurl
 
 include $(BUILD_SHARED_LIBRARY)
+
+
 
 include $(CLEAR_VARS)
 

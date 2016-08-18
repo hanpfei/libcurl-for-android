@@ -55,7 +55,8 @@
 #include <openssl/dh.h>
 #include <openssl/evp.h>
 #include <openssl/asn1.h>
-#include <openssl/cms.h>
+#include <openssl/x509.h>
+#include <openssl/ossl_typ.h>
 
 /* Key derivation from X9.42/RFC2631 */
 
