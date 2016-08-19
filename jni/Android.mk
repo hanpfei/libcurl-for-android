@@ -68,7 +68,7 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/3rd/openssl-1.0.2h \
 
 LOCAL_MODULE:= libcrypto
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
 
 
 include $(CLEAR_VARS)
@@ -88,7 +88,7 @@ LOCAL_SHARED_LIBRARIES += libcrypto
 
 LOCAL_MODULE:= libssl
 
-include $(BUILD_SHARED_LIBRARY)
+include $(BUILD_STATIC_LIBRARY)
 
 
 include $(CLEAR_VARS)
@@ -117,16 +117,17 @@ LOCAL_SHARED_LIBRARIES += libcrypto \
 
 LOCAL_MODULE:= openssl
 
-include $(BUILD_EXECUTABLE)
+#include $(BUILD_EXECUTABLE)
 
 CFLAGS := -Wpointer-arith -Wwrite-strings -Wunused -Winline \
  -Wnested-externs -Wmissing-declarations -Wmissing-prototypes -Wno-long-long \
  -Wfloat-equal -Wno-multichar -Wsign-compare -Wno-format-nonliteral \
  -Wendif-labels -Wstrict-prototypes -Wdeclaration-after-statement \
- -Wno-system-headers -DHAVE_CONFIG_H -DUSE_ARES
+ -Wno-system-headers -DHAVE_CONFIG_H -DUSE_ARES -DBUILDING_LIBCURL
 
 include $(CLEAR_VARS)
 include $(LOCAL_PATH)/3rd/curl/lib/Makefile.inc
+include $(LOCAL_PATH)/3rd/nghttp2/lib/Makefile.am
 
 #libcurl/7.45.0 c-ares/1.10.0
 LOCAL_SRC_FILES := $(addprefix 3rd/curl/lib/,$(CSOURCES))
@@ -162,12 +163,16 @@ LOCAL_SRC_FILES += 3rd/curl/c-ares/ares__close_sockets.c \
 	3rd/curl/c-ares/bitncmp.c \
 	3rd/curl/c-ares/inet_net_pton.c
 
+LOCAL_SRC_FILES += $(addprefix 3rd/nghttp2/lib/,$(OBJECTS))
+
 LOCAL_CFLAGS += $(CFLAGS)
 
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/3rd/curl/include/ \
 	$(LOCAL_PATH)/3rd/curl/lib \
 	$(LOCAL_PATH)/3rd/curl/c-ares \
-	$(LOCAL_PATH)/3rd/openssl-1.0.2h/include
+	$(LOCAL_PATH)/3rd/openssl-1.0.2h/include \
+	$(LOCAL_PATH)/3rd/nghttp2/lib/includes \
+	$(LOCAL_PATH)/3rd/nghttp2
 
 LOCAL_LDLIBS := -llog -landroid -lz
 
