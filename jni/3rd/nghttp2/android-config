@@ -23,12 +23,14 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+export ANDROID_HOME=/home/hanpfei0306/data/dev_tools/Android/android-ndk-r12b
+
 if [ -z "$ANDROID_HOME" ]; then
     echo 'No $ANDROID_HOME specified.'
     exit 1
 fi
-PREFIX="$ANDROID_HOME"/usr/local
-TOOLCHAIN="$ANDROID_HOME"/toolchain
+PREFIX=/media/data/dev_tools/Android/android-ndk-r9d/platforms/android-15/arch-arm
+TOOLCHAIN="$ANDROID_HOME"/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64
 PATH="$TOOLCHAIN"/bin:"$PATH"
 
 ./configure \
@@ -39,8 +41,8 @@ PATH="$TOOLCHAIN"/bin:"$PATH"
     --without-libxml2 \
     --disable-python-bindings \
     --disable-examples \
-    CC="$TOOLCHAIN"/bin/arm-linux-androideabi-gcc \
-    CXX="$TOOLCHAIN"/bin/arm-linux-androideabi-g++ \
-    CPPFLAGS="-fPIE -I$PREFIX/include" \
-    PKG_CONFIG_LIBDIR="$PREFIX/lib/pkgconfig" \
-    LDFLAGS="-fPIE -pie -L$PREFIX/lib"
+    CC=/home/hanpfei0306/data/dev_tools/Android/android-ndk-r12b/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-gcc \
+    CXX=/home/hanpfei0306/data/dev_tools/Android/android-ndk-r12b/toolchains/arm-linux-androideabi-4.9/prebuilt/linux-x86_64/bin/arm-linux-androideabi-g++ \
+    CPPFLAGS="-fPIE --sysroot=/media/data/dev_tools/Android/android-ndk-r9d/platforms/android-15/arch-arm -I/media/data/dev_tools/Android/android-ndk-r9d/platforms/android-15/arch-arm/usr/include" \
+    PKG_CONFIG_LIBDIR="/home/hanpfei0306/data/dev_tools/Android/android-ndk-r12b/prebuilt/linux-x86_64/lib/pkgconfig" \
+    LDFLAGS="-fPIE -pie -L/media/data/dev_tools/Android/android-ndk-r9d/platforms/android-15/arch-arm/usr/lib"
