@@ -10,12 +10,34 @@ include $(LOCAL_PATH)/3rd/openssl-1.0.2h/android-config.mk
 
 LOCAL_SRC_FILES := $(addprefix 3rd/openssl-1.0.2h/crypto/,$(CRYPTO_SRC))
 
+arm_cflags := -DOPENSSL_BN_ASM_MONT -DOPENSSL_BN_ASM_GF2m -DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DAES_ASM \
+	-DBSAES_ASM -DGHASH_ASM
+
+arm_src_files := 3rd/openssl-1.0.2h/crypto/armcap.c \
+	3rd/openssl-1.0.2h/crypto/armv4cpuid.S \
+	3rd/openssl-1.0.2h/crypto/bn/asm/armv4-mont.S \
+	3rd/openssl-1.0.2h/crypto/bn/asm/armv4-gf2m.S \
+	3rd/openssl-1.0.2h/crypto/sha/asm/sha1-armv4-large.S \
+	3rd/openssl-1.0.2h/crypto/sha/asm/sha256-armv4.S \
+	3rd/openssl-1.0.2h/crypto/sha/asm/sha512-armv4.S \
+	3rd/openssl-1.0.2h/crypto/aes/asm/aes-armv4.S \
+	3rd/openssl-1.0.2h/crypto/aes/asm/aesv8-armx.S \
+	3rd/openssl-1.0.2h/crypto/aes/asm/bsaes-armv7.S \
+	3rd/openssl-1.0.2h/crypto/modes/asm/ghash-armv4.S \
+	3rd/openssl-1.0.2h/crypto/modes/asm/ghashv8-armx.S
+
+#	
+
+non_arm_src_files :=
+
 LOCAL_SRC_FILES += $(addprefix 3rd/openssl-1.0.2h/crypto/aes/,$(AES_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/asn1/,$(ASN1_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/bf/,$(BF_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/bio/,$(BIO_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/bn/,$(BN_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/buffer/,$(BUFFER_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/camellia/,$(CAMELLIA_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/cast/,$(CAST_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/cmac/,$(CMAC_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/cms/,$(CMS_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/comp/,$(COMP_SRC)) \
@@ -27,9 +49,11 @@ LOCAL_SRC_FILES += $(addprefix 3rd/openssl-1.0.2h/crypto/aes/,$(AES_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/ec/,$(EC_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/ecdh/,$(ECDH_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/ecdsa/,$(ECDSA_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/engine/,$(ENGINE_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/err/,$(ERR_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/evp/,$(EVP_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/hmac/,$(HMAC_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/idea/,$(IDEA_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/krb5/,$(KRB5_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/lhash/,$(LHASH_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/md4/,$(MD4_SRC)) \
@@ -47,6 +71,7 @@ LOCAL_SRC_FILES += $(addprefix 3rd/openssl-1.0.2h/crypto/aes/,$(AES_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/rc4/,$(RC4_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/ripemd/,$(RIPEMD_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/rsa/,$(RSA_SRC)) \
+	$(addprefix 3rd/openssl-1.0.2h/crypto/seed/,$(SEED_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/sha/,$(SHA_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/srp/,$(SRP_SRC)) \
 	$(addprefix 3rd/openssl-1.0.2h/crypto/stack/,$(STACK_SRC)) \
@@ -63,8 +88,14 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/3rd/openssl-1.0.2h \
 	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/asn1 \
 	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/evp \
 	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/modes \
-	$(LOCAL_PATH)/3rd/openssl-1.0.2h/crypto/store \
 	$(LOCAL_PATH)/3rd/openssl-1.0.2h/include \
+
+ifeq ($(TARGET_ARCH),arm)
+	LOCAL_SRC_FILES += $(arm_src_files)
+	LOCAL_CFLAGS += $(arm_cflags)
+else
+	LOCAL_SRC_FILES += $(non_arm_src_files)
+endif
 
 LOCAL_MODULE:= libcrypto
 

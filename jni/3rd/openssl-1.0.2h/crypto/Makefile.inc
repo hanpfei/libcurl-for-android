@@ -35,6 +35,8 @@ ASN1_SRC=	a_object.c a_bitstr.c a_utctm.c a_gentm.c a_time.c a_int.c a_octet.c \
 	asn1_gen.c asn1_par.c asn1_lib.c asn1_err.c a_bytes.c a_strnid.c \
 	evp_asn1.c asn_pack.c p5_pbe.c p5_pbev2.c p8_pkey.c asn_moid.c
 
+BF_SRC=bf_skey.c bf_ecb.c bf_enc.c bf_cfb64.c bf_ofb64.c 
+
 BIO_SRC= bio_lib.c bio_cb.c bio_err.c \
 	bss_mem.c bss_null.c bss_fd.c \
 	bss_file.c bss_sock.c bss_conn.c \
@@ -53,6 +55,8 @@ BUFFER_SRC= buffer.c buf_str.c buf_err.c
 
 CAMELLIA_SRC=camellia.c cmll_misc.c cmll_ecb.c cmll_cbc.c cmll_ofb.c \
 	   cmll_cfb.c cmll_ctr.c cmll_utl.c
+
+CAST_SRC=c_skey.c c_ecb.c c_enc.c c_cfb64.c c_ofb64.c 
 
 CMAC_SRC=cmac.c cm_ameth.c cm_pmeth.c
 
@@ -118,6 +122,8 @@ EVP_SRC= encode.c digest.c evp_enc.c evp_key.c evp_acnf.c evp_cnf.c \
 
 HMAC_SRC=hmac.c hm_ameth.c hm_pmeth.c
 
+IDEA_SRC=i_cbc.c i_cfb64.c i_ofb64.c i_ecb.c i_skey.c
+
 JPAKE_SRC=jpake.c jpake_err.c
 
 KRB5_SRC= krb5_asn.c
@@ -163,6 +169,8 @@ RSA_SRC= rsa_eay.c rsa_gen.c rsa_lib.c rsa_sign.c rsa_saos.c rsa_err.c \
 	rsa_pk1.c rsa_ssl.c rsa_none.c rsa_oaep.c rsa_chk.c rsa_null.c \
 	rsa_pss.c rsa_x931.c rsa_asn1.c rsa_depr.c rsa_ameth.c rsa_prn.c \
 	rsa_pmeth.c rsa_crpt.c
+
+SEED_SRC=seed.c seed_ecb.c seed_cbc.c seed_cfb.c seed_ofb.c
 
 SHA_SRC=sha_dgst.c sha1dgst.c sha_one.c sha1_one.c sha256.c sha512.c
 

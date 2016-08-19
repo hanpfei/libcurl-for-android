@@ -61,8 +61,7 @@
 
 #include <stdio.h>
 #include <openssl/err.h>
-
-#include "store.h"
+#include <openssl/store.h>
 
 /* BEGIN ERROR CODES */
 #ifndef OPENSSL_NO_ERR
