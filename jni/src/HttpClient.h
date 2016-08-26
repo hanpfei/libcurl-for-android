@@ -25,7 +25,7 @@ public:
     static const std::string DEFAULT_USER_AGENT2;
 
 private:
-    static const int TIMEOUT_SECONDS = 2; // time out in second
+    static const int TIMEOUT_SECONDS = 5; // time out in second
     static const int MAX_REDIRECT = 5; // max redirect times
 
     const static std::string ServerHostAddr;
